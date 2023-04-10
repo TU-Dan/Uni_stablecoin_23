@@ -81,4 +81,3 @@ select *
     end as pool_type
 from last_step
 ;
-
