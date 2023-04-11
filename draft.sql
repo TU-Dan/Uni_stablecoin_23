@@ -210,6 +210,30 @@ AND block_time >= (SELECT sd FROM start_and_end_date)
 AND block_time <= (SELECT ed FROM start_and_end_date)
 
 
+  
+, tokens AS (SELECT CASE WHEN token_a_symbol > token_b_symbol THEN token_b_symbol ELSE token_a_symbol END AS "Token A"
+    , CASE WHEN token_a_symbol > token_b_symbol THEN token_a_symbol ELSE token_b_symbol END AS "Token B"
+    , exchange_contract_address AS contract_address
+    FROM (SELECT * FROM dex.trades
+    WHERE exchange_contract_address=(SELECT pc FROM pool_contract)
+    LIMIT 1) t
+    GROUP BY exchange_contract_address, token_a_symbol, token_b_symbol
+    )
+
+
+SELECT MAX("Token A") AS "Token A"
+, MAX("Token B") AS "Token B"
+, MAX(dpf.project) AS "Project"
+, MAX(dpf.lp_fee_percentage) AS "Pool Fee"
+FROM dex_pool_fees dpf
+LEFT JOIN tokens dt ON dt.contract_address=dpf.contract_address
+AND end_block_time > NOW()
+LIMIT 1
+
+
+
+
+
 
 
 trades as (

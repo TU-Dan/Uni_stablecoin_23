@@ -7,3 +7,5 @@ Liquidity flows of the 4 pools: using uniswap v2, v3 & sushiswap
 - stablecoin to stablecoin pools
 - non-stable to non-stablecoin pools
 
+TODO:
+- need to get non-stable coin token symbol
