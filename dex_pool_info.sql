@@ -1,6 +1,6 @@
 -- ===================================================
 -- create dune_user_generated.dex_pool_info table, collect all info for pools
-CREATE or REPLACE view dune_user_generated.dex_pool_info as  
+CREATE or REPLACE view dune_user_generated.dex_pool_info1 as  
 with uniswap_v2 AS (
     SELECT pair as pool, contract_address, token0, token1, 0.3 as fee
         ,'Uniswap v2' AS project
@@ -32,7 +32,8 @@ with uniswap_v2 AS (
 , liquidity as (
     select pool_address, token_pool_percentage,token_index, token_symbol, token_amount, token_usd_amount
     from dex."liquidity" l
-    where day = current_date - INTERVAL '1 day'
+    where day = (SELECT MAX(day) FROM dex."liquidity" )
+    -- current_date - INTERVAL '1 day'
     )
 
 -- , liquidity as (
